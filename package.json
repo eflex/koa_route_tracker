@@ -1,0 +1,19 @@
+{
+  "name": "koa_route_tracker",
+  "version": "0.0.1",
+  "description": "simple koa middleware to track user activities",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com/eflex/koa_route_tracker"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^4.0.5",
+    "mongoose-timestamp": "^0.4.0"
+  }
+}
