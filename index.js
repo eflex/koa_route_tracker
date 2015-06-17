@@ -59,8 +59,9 @@ module.exports = function(url, collection) {
     var ip = this.ip;
     var destination = this.originalUrl;
     var action = checkAction(referrer, hostname)
-
+    var newID = mongoose.Types.ObjectId();
     var newData = {
+      _id: newID,
       user: user,
       ipaddress: ip,
       action: action,
