@@ -15,7 +15,9 @@ var router = require("koa-router")();
 var routerTracker = require("koa_route_tracker")
 module.exports = function() {
   router
-    .use(getUser) // middleware to define this.user that route tracker needs
+    // middleware to define this.user that route tracker needs
+    .use(getUser)
+    // routerTracker(urlParser, collection, [blackList])
     .use(routerTracker("mongodb://localhost:27017/userActivities"))
     .get(...)
     .post(...)
