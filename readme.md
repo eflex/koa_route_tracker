@@ -26,3 +26,8 @@ module.exports = function() {
 
   return router;
 ```
+
+## ToDo
+
+* 404 should be recorded
+* 500 error should be recorded
