@@ -99,7 +99,7 @@ module.exports = function(url, collection, blackList) {
       var crawler = new RegExp(
         "(googlebot)|(mediapartners)|(adsbot)|(msnbot)|(bingbot)|(Yo(u)?daoBot)|(Ya)(andex|DirectBot)|(baiduspider)|(duckduckbot)|(slurp)|(blekkobot)|(scribdbot)|(asterias)|(DoCoMo)|(Sogou)|(ichiro)|(moget)|(NaverBot)|(MJ12bot)",
         "i");
-      var ios = new RegExp("\\biPhone.*Mobile|\\biPod|\\biPad", "i")
+      var ios = new RegExp("\\biPhone.*Mobile|\\biPod", "i")
 
       // detect device
       var device = "Desktop";
