@@ -2,6 +2,7 @@
 
 var mongoose = require('mongoose');
 var urlParser = require("url").parse;
+var detector = require("device_detect");
 
 var timestamp = require('mongoose-timestamp');
 var Schema = mongoose.Schema;
@@ -36,6 +37,10 @@ var TrackerSchema = new Schema({
   os: {
     type: String,
     default: "Desktop"
+  },
+  browser: {
+    type: String,
+    default: "Others"
   },
   status: {
     type: Number,
@@ -94,36 +99,8 @@ module.exports = function(url, collection, blackList) {
       var action = checkAction(referrer, hostname)
       var status = this.status || 404;
 
-
-      // Patterns to detect
-      var crawler = new RegExp(
-        "(googlebot)|(mediapartners)|(adsbot)|(msnbot)|(bingbot)|(Yo(u)?daoBot)|(Ya)(andex|DirectBot)|(baiduspider)|(duckduckbot)|(slurp)|(blekkobot)|(scribdbot)|(asterias)|(DoCoMo)|(Sogou)|(ichiro)|(moget)|(NaverBot)|(MJ12bot)",
-        "i");
-      var ios = new RegExp("\\biPhone.*Mobile|\\biPod", "i")
-
-      // detect device
-      var device = "Desktop";
-      if (/(mobi)/i.test(userAgentHeader)) {
-        device = "Phone";
-      } else if (/(tablet)|(iPad)/i.test(userAgentHeader)) {
-        device = "Tablet";
-      } else if (crawler.test(userAgentHeader)) {
-        device = "Robot"
-      }
-
-      // detect os
-      var os = "Others";
-      if (/Android/i.test(userAgentHeader)) {
-        os = "Android"
-      } else if (ios.test(userAgentHeader)) {
-        os = "IOS"
-      } else if (/(Mac_PowerPC)|(Macintosh)/i.test(userAgentHeader)) {
-        os = "Mas OS"
-      } else if (/(Linux)|(X11)/i.test(userAgentHeader)) {
-        os = "Linux/Unix"
-      } else if (/(Windows)|(Win)/i.test(userAgentHeader)) {
-        os = "Windows"
-      }
+      // detec device being used
+      var detectedDevice = detector(userAgentHeader);
 
       var newData = {
         user: user,
@@ -132,8 +109,9 @@ module.exports = function(url, collection, blackList) {
         referrer: referrer,
         destination: destination,
         method: method,
-        device: device,
-        os: os,
+        device: detectedDevice.device,
+        os: detectedDevice.os,
+        browser: detectedDevice.browser,
         status: status
       }
 
