@@ -1,14 +1,14 @@
 'use strict'
 
-var mongoose = require('mongoose');
-var urlParser = require("url").parse;
-var detector = require("device_detect");
+let mongoose = require('mongoose');
+let urlParser = require("url").parse;
+let detector = require("device_detect");
 
-var timestamp = require('mongoose-timestamp');
-var Schema = mongoose.Schema;
+let timestamp = require('mongoose-timestamp');
+let Schema = mongoose.Schema;
 
 // define model
-var TrackerSchema = new Schema({
+let TrackerSchema = new Schema({
   user: {
     type: String,
     default: null
@@ -50,7 +50,7 @@ var TrackerSchema = new Schema({
 TrackerSchema.plugin(timestamp);
 
 function checkAction(referer, hostname) {
-  var parsedReferer = urlParser(referer)
+  let parsedReferer = urlParser(referer)
   if (hostname == parsedReferer.hostname) return "click";
   return "view";
 }
@@ -59,8 +59,8 @@ function isInBlackList(toTest, blackList) {
   // remove trailing slashes
   toTest = toTest.replace(RegExp("(^/|/$)", "g"), '');
 
-  for (var i = 0; i < blackList.length; i++) {
-    var pattern = new RegExp(blackList[i], "i");
+  for (let i = 0; i < blackList.length; i++) {
+    let pattern = new RegExp(blackList[i], "i");
     // console.log(pattern, pattern.test(toTest), toTest)
     if (pattern.test(toTest)) return true;
   }
@@ -74,7 +74,7 @@ module.exports = function(url, collection, blackList) {
 
   // connect to Mongodb
   mongoose.connect(url);
-  var TrackerModel = mongoose.model("Tracker", TrackerSchema,
+  let TrackerModel = mongoose.model("Tracker", TrackerSchema,
     collection);
 
 
@@ -83,26 +83,26 @@ module.exports = function(url, collection, blackList) {
 
     if (!isInBlackList(this.url, blackList)) {
       // set user if this.user is defined
-      var user = "anonymous";
+      let user = "anonymous";
       if (this.user) {
         if (this.user.id) user = this.user.id;
         else if (this.user.email) user = this.user.email;
         else user = this.user
       }
 
-      var userAgentHeader = this.get("user-agent") || "";
-      var referrer = this.get("referer") || "";
-      var method = this.method;
-      var hostname = this.hostname || "";
-      var ip = this.request.header['x-forwarded-for'];
-      var destination = this.originalUrl;
-      var action = checkAction(referrer, hostname)
-      var status = this.status || 404;
+      let userAgentHeader = this.get("user-agent") || "";
+      let referrer = this.get("referer") || "";
+      let method = this.method;
+      let hostname = this.hostname || "";
+      let ip = this.ip;
+      let destination = this.originalUrl;
+      let action = checkAction(referrer, hostname)
+      let status = this.status || 404;
 
       // detec device being used
-      var detectedDevice = detector(userAgentHeader);
+      let detectedDevice = detector(userAgentHeader);
 
-      var newData = {
+      let newData = {
         user: user,
         ipaddress: ip,
         action: action,
